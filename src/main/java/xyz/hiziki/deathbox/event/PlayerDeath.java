@@ -25,57 +25,113 @@ public class PlayerDeath implements Listener
 
         setBox(p);
 
-        if (p.getLocation().clone().add(0, 0, 1).getBlock().getType() == Material.AIR)
+        if (p.getLocation().clone().add(0, 0, 0).getBlock().getType() == Material.AIR) //死んだときのy座標にブロックがなかったら
         {
-            //死亡位置からz-1が空気だった場合
-            Block rightSide = p.getLocation().getBlock();
-            Block leftSide = p.getLocation().clone().add(0, 0, 1).getBlock(); //南に向かってチェストを設置
-            rightSide.setType(Material.CHEST);
-            leftSide.setType(Material.CHEST);
-            rightSide.setBlockData(Material.CHEST.createBlockData("[facing=west,type=right]"));
-            leftSide.setBlockData(Material.CHEST.createBlockData("[facing=west,type=left]"));
-            createChest(p);
-            e.getDrops().clear();
+            if (p.getLocation().clone().add(0, 0, 1).getBlock().getType() == Material.AIR)
+            {
+                //死亡位置からz-1が空気だった場合
+                Block rightSide = p.getLocation().getBlock();
+                Block leftSide = p.getLocation().clone().add(0, 0, 1).getBlock(); //南に向かってチェストを設置
+                rightSide.setType(Material.CHEST);
+                leftSide.setType(Material.CHEST);
+                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=west,type=right]"));
+                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=west,type=left]"));
+                createChest(p);
+                e.getDrops().clear();
+            }
+            else if (p.getLocation().clone().add(0, 0, -1).getBlock().getType() == Material.AIR)
+            {
+                //死亡位置からz+1が空気だった場合
+                Block rightSide = p.getLocation().getBlock();
+                Block leftSide = p.getLocation().clone().add(0, 0, -1).getBlock(); //北に向かってチェストを設置
+                rightSide.setType(Material.CHEST);
+                leftSide.setType(Material.CHEST);
+                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=east,type=right]"));
+                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=east,type=left]"));
+                createChest(p);
+                e.getDrops().clear();
+            }
+            else if (p.getLocation().clone().add(1, 0, 0).getBlock().getType() == Material.AIR)
+            {
+                //死亡位置からx+1が空気だった場合
+                Block rightSide = p.getLocation().getBlock();
+                Block leftSide = p.getLocation().clone().add(1, 0, 0).getBlock(); //西に向かってチェストを設置
+                rightSide.setType(Material.CHEST);
+                leftSide.setType(Material.CHEST);
+                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=left]"));
+                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=right]"));
+                createChest(p);
+                e.getDrops().clear();
+            }
+            else if (p.getLocation().clone().add(-1, 0, 0).getBlock().getType() == Material.AIR)
+            {
+                //死亡位置からx-1が空気だった場合
+                Block rightSide = p.getLocation().getBlock();
+                Block leftSide = p.getLocation().clone().add(-1, 0, 0).getBlock(); //東に向かってチェストを設置
+                rightSide.setType(Material.CHEST);
+                leftSide.setType(Material.CHEST);
+                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=right]"));
+                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=left]"));
+                createChest(p);
+                e.getDrops().clear();
+            }
         }
-        else if (p.getLocation().clone().add(0, 0, -1).getBlock().getType() == Material.AIR)
+        else if (p.getLocation().clone().add(0, 1, 0).getBlock().getType() == Material.AIR) //死んだときのy座標の一つ上にブロックがなかったら
         {
-            //死亡位置からz+1が空気だった場合
-            Block rightSide = p.getLocation().getBlock();
-            Block leftSide = p.getLocation().clone().add(0, 0, -1).getBlock(); //北に向かってチェストを設置
-            rightSide.setType(Material.CHEST);
-            leftSide.setType(Material.CHEST);
-            rightSide.setBlockData(Material.CHEST.createBlockData("[facing=east,type=right]"));
-            leftSide.setBlockData(Material.CHEST.createBlockData("[facing=east,type=left]"));
-            createChest(p);
-            e.getDrops().clear();
-        }
-        else if (p.getLocation().clone().add(1, 0, 0).getBlock().getType() == Material.AIR)
-        {
-            //死亡位置からx+1が空気だった場合
-            Block rightSide = p.getLocation().getBlock();
-            Block leftSide = p.getLocation().clone().add(1, 0, 0).getBlock(); //西に向かってチェストを設置
-            rightSide.setType(Material.CHEST);
-            leftSide.setType(Material.CHEST);
-            rightSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=left]"));
-            leftSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=right]"));
-            createChest(p);
-            e.getDrops().clear();
-        }
-        else if (p.getLocation().clone().add(-1, 0, 0).getBlock().getType() == Material.AIR)
-        {
-            //死亡位置からx-1が空気だった場合
-            Block rightSide = p.getLocation().getBlock();
-            Block leftSide = p.getLocation().clone().add(-1, 0, 0).getBlock(); //東に向かってチェストを設置
-            rightSide.setType(Material.CHEST);
-            leftSide.setType(Material.CHEST);
-            rightSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=right]"));
-            leftSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=left]"));
-            createChest(p);
-            e.getDrops().clear();
-        }
-        else
-        {
-            new Prefix(p, ChatColor.RED + "周りにブロックが設置されていたためアイテムをBox内に入れる事ができませんでした。");
+            if (p.getLocation().clone().add(0, 1, 1).getBlock().getType() == Material.AIR)
+            {
+                //死亡位置からz-1が空気だった場合
+                Block rightSide = p.getLocation().clone().add(0, 1, 0).getBlock();
+                Block leftSide = p.getLocation().clone().add(0, 1, 1).getBlock(); //南に向かってチェストを設置
+                rightSide.setType(Material.CHEST);
+                leftSide.setType(Material.CHEST);
+                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=west,type=right]"));
+                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=west,type=left]"));
+                createChest(p);
+                e.getDrops().clear();
+            }
+            else if (p.getLocation().clone().add(0, 1, -1).getBlock().getType() == Material.AIR)
+            {
+                //死亡位置からz+1が空気だった場合
+                Block rightSide = p.getLocation().clone().add(0, 1, 0).getBlock();
+                Block leftSide = p.getLocation().clone().add(0, 1, -1).getBlock(); //北に向かってチェストを設置
+                rightSide.setType(Material.CHEST);
+                leftSide.setType(Material.CHEST);
+                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=east,type=right]"));
+                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=east,type=left]"));
+                createChest(p);
+                e.getDrops().clear();
+            }
+            else if (p.getLocation().clone().add(1, 0, 0).getBlock().getType() == Material.AIR)
+            {
+                //死亡位置からx+1が空気だった場合
+                Block rightSide = p.getLocation().clone().add(0, 1, 0).getBlock();
+                Block leftSide = p.getLocation().clone().add(1, 1, 0).getBlock(); //西に向かってチェストを設置
+                rightSide.setType(Material.CHEST);
+                leftSide.setType(Material.CHEST);
+                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=left]"));
+                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=right]"));
+                createChest(p);
+                e.getDrops().clear();
+            }
+            else if (p.getLocation().clone().add(-1, 0, 0).getBlock().getType() == Material.AIR)
+            {
+                //死亡位置からx-1が空気だった場合
+                Block rightSide = p.getLocation().clone().add(0, 1, 0).getBlock();
+                Block leftSide = p.getLocation().clone().add(-1, 1, 0).getBlock(); //東に向かってチェストを設置
+                rightSide.setType(Material.CHEST);
+                leftSide.setType(Material.CHEST);
+                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=right]"));
+                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=left]"));
+                createChest(p);
+                e.getDrops().clear();
+            }
+            else
+            {
+                new Prefix(p, ChatColor.RED + "周りにブロックが設置されていたためアイテムをBox内に入れる事ができませんでした。");
+                return;
+            }
+            new Prefix(p, ChatColor.AQUA + "Boxは正常に作成されました。");
         }
     }
 
