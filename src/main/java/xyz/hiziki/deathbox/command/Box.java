@@ -21,7 +21,7 @@ public class Box implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
-        if (!(sender instanceof Player))
+        if (!(sender instanceof Player p))
         {
             if (sender instanceof ConsoleCommandSender)
             {
@@ -34,8 +34,6 @@ public class Box implements CommandExecutor
         }
         else
         {
-            Player p = (Player) sender;
-
             if (boxes.getString("Boxes." + p.getUniqueId() + ".Location") == null)
             {
                 new Prefix(p, ChatColor.RED + "Boxデータが見つかりません");
