@@ -8,12 +8,11 @@ import java.io.IOException;
 
 public class SaveFile
 {
-    private final File boxFile = Main.getBoxFile();
-
-    private final YamlConfiguration boxes = Main.getBoxes();
-
     public SaveFile()
     {
+        File boxFile = Main.getBoxFile();
+        YamlConfiguration boxes = Main.getBoxes();
+
         try
         {
             boxes.save(boxFile);
