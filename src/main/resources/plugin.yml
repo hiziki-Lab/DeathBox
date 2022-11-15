@@ -1,7 +1,7 @@
 name: DeathBox
 version: '${project.version}'
 main: xyz.hiziki.deathbox.Main
-api-version: 1.19
+api-version: 1.16
 prefix: DeathBox
 authors: [ hi_kun_JPN ]
 description: プレイヤーが死んだ位置にデスボックスとしてアイテムが保存されます。
