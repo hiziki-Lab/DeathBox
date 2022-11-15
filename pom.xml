@@ -6,7 +6,7 @@
 
     <groupId>xyz.hiziki</groupId>
     <artifactId>DeathBox</artifactId>
-    <version>1.0</version>
+    <version>1.2-be</version>
     <packaging>jar</packaging>
 
     <name>DeathBox</name>
