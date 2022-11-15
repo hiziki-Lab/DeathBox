@@ -13,9 +13,9 @@ import xyz.hiziki.deathbox.util.Prefix;
 
 public class Box implements CommandExecutor
 {
-    private final JavaPlugin plugin = Main.plugin;
+    private final JavaPlugin plugin = Main.getPlugin();
 
-    private final YamlConfiguration boxes = Main.boxes;
+    private final YamlConfiguration boxes = Main.getBoxes();
 
     @SuppressWarnings("NullableProblems")
     @Override

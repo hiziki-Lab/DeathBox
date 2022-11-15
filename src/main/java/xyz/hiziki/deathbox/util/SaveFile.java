@@ -8,9 +8,9 @@ import java.io.IOException;
 
 public class SaveFile
 {
-    private final File boxFile = Main.boxFile;
+    private final File boxFile = Main.getBoxFile();
 
-    private final YamlConfiguration boxes = Main.boxes;
+    private final YamlConfiguration boxes = Main.getBoxes();
 
     public SaveFile()
     {

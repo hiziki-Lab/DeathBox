@@ -11,11 +11,11 @@ import java.io.File;
 
 public final class Main extends JavaPlugin
 {
-    public static JavaPlugin plugin;
+    private static JavaPlugin plugin;
 
-    public static File boxFile;
+    private static File boxFile;
 
-    public static YamlConfiguration boxes;
+    private static YamlConfiguration boxes;
 
     @Override
     public void onEnable()
@@ -47,5 +47,20 @@ public final class Main extends JavaPlugin
         new SaveFile();
 
         getLogger().info("プラグインは正常に停止しました。");
+    }
+
+    public static JavaPlugin getPlugin()
+    {
+        return plugin;
+    }
+
+    public static File getBoxFile()
+    {
+        return boxFile;
+    }
+
+    public static YamlConfiguration getBoxes()
+    {
+        return boxes;
     }
 }

@@ -16,7 +16,7 @@ import xyz.hiziki.deathbox.util.SaveFile;
 
 public class PlayerDeath implements Listener
 {
-    private final YamlConfiguration boxes = Main.boxes;
+    private final YamlConfiguration boxes = Main.getBoxes();
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e)
