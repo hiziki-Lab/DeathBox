@@ -1,158 +1,143 @@
-package xyz.hiziki.deathbox.event;
+package xyz.hiziki.deathbox.event
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.inventory.ItemStack;
-import xyz.hiziki.deathbox.Main;
-import xyz.hiziki.deathbox.util.Prefix;
-import xyz.hiziki.deathbox.util.SaveFile;
+import org.bukkit.ChatColor
+import org.bukkit.Material
+import org.bukkit.block.Chest
+import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.entity.PlayerDeathEvent
+import xyz.hiziki.deathbox.Main
+import xyz.hiziki.deathbox.util.Prefix
+import xyz.hiziki.deathbox.util.SaveFile
 
-public class PlayerDeath implements Listener
+class PlayerDeath : Listener
 {
-    private final YamlConfiguration boxes = Main.getBoxes();
-
+    private val boxes : YamlConfiguration? = Main.Companion.getBoxes()
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent e)
+    fun onPlayerDeath(e : PlayerDeathEvent)
     {
-        Player p = e.getEntity();
-
-        setBox(p);
-
-        if (p.getLocation().clone().add(0, 0, 0).getBlock().getType() == Material.AIR) //死んだときのy座標にブロックがなかったら
+        val p = e.entity
+        setBox(p)
+        if (p.location.clone().add(0.0, 0.0, 0.0).block.type == Material.AIR) //死んだときのy座標にブロックがなかったら
         {
-            if (p.getLocation().clone().add(0, 0, 1).getBlock().getType() == Material.AIR)
+            if (p.location.clone().add(0.0, 0.0, 1.0).block.type == Material.AIR)
             {
                 //死亡位置からz-1が空気だった場合
-                Block rightSide = p.getLocation().getBlock();
-                Block leftSide = p.getLocation().clone().add(0, 0, 1).getBlock(); //南に向かってチェストを設置
-                rightSide.setType(Material.CHEST);
-                leftSide.setType(Material.CHEST);
-                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=west,type=right]"));
-                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=west,type=left]"));
-                createChest(p);
-                e.getDrops().clear();
-            }
-            else if (p.getLocation().clone().add(0, 0, -1).getBlock().getType() == Material.AIR)
+                val rightSide = p.location.block
+                val leftSide = p.location.clone().add(0.0, 0.0, 1.0).block //南に向かってチェストを設置
+                rightSide.type = Material.CHEST
+                leftSide.type = Material.CHEST
+                rightSide.blockData = Material.CHEST.createBlockData("[facing=west,type=right]")
+                leftSide.blockData = Material.CHEST.createBlockData("[facing=west,type=left]")
+                createChest(p)
+                e.drops.clear()
+            } else if (p.location.clone().add(0.0, 0.0, -1.0).block.type == Material.AIR)
             {
                 //死亡位置からz+1が空気だった場合
-                Block rightSide = p.getLocation().getBlock();
-                Block leftSide = p.getLocation().clone().add(0, 0, -1).getBlock(); //北に向かってチェストを設置
-                rightSide.setType(Material.CHEST);
-                leftSide.setType(Material.CHEST);
-                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=east,type=right]"));
-                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=east,type=left]"));
-                createChest(p);
-                e.getDrops().clear();
-            }
-            else if (p.getLocation().clone().add(1, 0, 0).getBlock().getType() == Material.AIR)
+                val rightSide = p.location.block
+                val leftSide = p.location.clone().add(0.0, 0.0, -1.0).block //北に向かってチェストを設置
+                rightSide.type = Material.CHEST
+                leftSide.type = Material.CHEST
+                rightSide.blockData = Material.CHEST.createBlockData("[facing=east,type=right]")
+                leftSide.blockData = Material.CHEST.createBlockData("[facing=east,type=left]")
+                createChest(p)
+                e.drops.clear()
+            } else if (p.location.clone().add(1.0, 0.0, 0.0).block.type == Material.AIR)
             {
                 //死亡位置からx+1が空気だった場合
-                Block rightSide = p.getLocation().getBlock();
-                Block leftSide = p.getLocation().clone().add(1, 0, 0).getBlock(); //西に向かってチェストを設置
-                rightSide.setType(Material.CHEST);
-                leftSide.setType(Material.CHEST);
-                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=left]"));
-                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=right]"));
-                createChest(p);
-                e.getDrops().clear();
-            }
-            else if (p.getLocation().clone().add(-1, 0, 0).getBlock().getType() == Material.AIR)
+                val rightSide = p.location.block
+                val leftSide = p.location.clone().add(1.0, 0.0, 0.0).block //西に向かってチェストを設置
+                rightSide.type = Material.CHEST
+                leftSide.type = Material.CHEST
+                rightSide.blockData = Material.CHEST.createBlockData("[facing=north,type=left]")
+                leftSide.blockData = Material.CHEST.createBlockData("[facing=north,type=right]")
+                createChest(p)
+                e.drops.clear()
+            } else if (p.location.clone().add(-1.0, 0.0, 0.0).block.type == Material.AIR)
             {
                 //死亡位置からx-1が空気だった場合
-                Block rightSide = p.getLocation().getBlock();
-                Block leftSide = p.getLocation().clone().add(-1, 0, 0).getBlock(); //東に向かってチェストを設置
-                rightSide.setType(Material.CHEST);
-                leftSide.setType(Material.CHEST);
-                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=right]"));
-                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=left]"));
-                createChest(p);
-                e.getDrops().clear();
+                val rightSide = p.location.block
+                val leftSide = p.location.clone().add(-1.0, 0.0, 0.0).block //東に向かってチェストを設置
+                rightSide.type = Material.CHEST
+                leftSide.type = Material.CHEST
+                rightSide.blockData = Material.CHEST.createBlockData("[facing=north,type=right]")
+                leftSide.blockData = Material.CHEST.createBlockData("[facing=north,type=left]")
+                createChest(p)
+                e.drops.clear()
             }
-        }
-        else if (p.getLocation().clone().add(0, 1, 0).getBlock().getType() == Material.AIR) //死んだときのy座標の一つ上にブロックがなかったら
+        } else if (p.location.clone().add(0.0, 1.0, 0.0).block.type == Material.AIR) //死んだときのy座標の一つ上にブロックがなかったら
         {
-            if (p.getLocation().clone().add(0, 1, 1).getBlock().getType() == Material.AIR)
+            if (p.location.clone().add(0.0, 1.0, 1.0).block.type == Material.AIR)
             {
                 //死亡位置からz-1が空気だった場合
-                Block rightSide = p.getLocation().clone().add(0, 1, 0).getBlock();
-                Block leftSide = p.getLocation().clone().add(0, 1, 1).getBlock(); //南に向かってチェストを設置
-                rightSide.setType(Material.CHEST);
-                leftSide.setType(Material.CHEST);
-                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=west,type=right]"));
-                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=west,type=left]"));
-                createChest(p);
-                e.getDrops().clear();
-            }
-            else if (p.getLocation().clone().add(0, 1, -1).getBlock().getType() == Material.AIR)
+                val rightSide = p.location.clone().add(0.0, 1.0, 0.0).block
+                val leftSide = p.location.clone().add(0.0, 1.0, 1.0).block //南に向かってチェストを設置
+                rightSide.type = Material.CHEST
+                leftSide.type = Material.CHEST
+                rightSide.blockData = Material.CHEST.createBlockData("[facing=west,type=right]")
+                leftSide.blockData = Material.CHEST.createBlockData("[facing=west,type=left]")
+                createChest(p)
+                e.drops.clear()
+            } else if (p.location.clone().add(0.0, 1.0, -1.0).block.type == Material.AIR)
             {
                 //死亡位置からz+1が空気だった場合
-                Block rightSide = p.getLocation().clone().add(0, 1, 0).getBlock();
-                Block leftSide = p.getLocation().clone().add(0, 1, -1).getBlock(); //北に向かってチェストを設置
-                rightSide.setType(Material.CHEST);
-                leftSide.setType(Material.CHEST);
-                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=east,type=right]"));
-                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=east,type=left]"));
-                createChest(p);
-                e.getDrops().clear();
-            }
-            else if (p.getLocation().clone().add(1, 0, 0).getBlock().getType() == Material.AIR)
+                val rightSide = p.location.clone().add(0.0, 1.0, 0.0).block
+                val leftSide = p.location.clone().add(0.0, 1.0, -1.0).block //北に向かってチェストを設置
+                rightSide.type = Material.CHEST
+                leftSide.type = Material.CHEST
+                rightSide.blockData = Material.CHEST.createBlockData("[facing=east,type=right]")
+                leftSide.blockData = Material.CHEST.createBlockData("[facing=east,type=left]")
+                createChest(p)
+                e.drops.clear()
+            } else if (p.location.clone().add(1.0, 0.0, 0.0).block.type == Material.AIR)
             {
                 //死亡位置からx+1が空気だった場合
-                Block rightSide = p.getLocation().clone().add(0, 1, 0).getBlock();
-                Block leftSide = p.getLocation().clone().add(1, 1, 0).getBlock(); //西に向かってチェストを設置
-                rightSide.setType(Material.CHEST);
-                leftSide.setType(Material.CHEST);
-                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=left]"));
-                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=right]"));
-                createChest(p);
-                e.getDrops().clear();
-            }
-            else if (p.getLocation().clone().add(-1, 0, 0).getBlock().getType() == Material.AIR)
+                val rightSide = p.location.clone().add(0.0, 1.0, 0.0).block
+                val leftSide = p.location.clone().add(1.0, 1.0, 0.0).block //西に向かってチェストを設置
+                rightSide.type = Material.CHEST
+                leftSide.type = Material.CHEST
+                rightSide.blockData = Material.CHEST.createBlockData("[facing=north,type=left]")
+                leftSide.blockData = Material.CHEST.createBlockData("[facing=north,type=right]")
+                createChest(p)
+                e.drops.clear()
+            } else if (p.location.clone().add(-1.0, 0.0, 0.0).block.type == Material.AIR)
             {
                 //死亡位置からx-1が空気だった場合
-                Block rightSide = p.getLocation().clone().add(0, 1, 0).getBlock();
-                Block leftSide = p.getLocation().clone().add(-1, 1, 0).getBlock(); //東に向かってチェストを設置
-                rightSide.setType(Material.CHEST);
-                leftSide.setType(Material.CHEST);
-                rightSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=right]"));
-                leftSide.setBlockData(Material.CHEST.createBlockData("[facing=north,type=left]"));
-                createChest(p);
-                e.getDrops().clear();
-            }
-            else
+                val rightSide = p.location.clone().add(0.0, 1.0, 0.0).block
+                val leftSide = p.location.clone().add(-1.0, 1.0, 0.0).block //東に向かってチェストを設置
+                rightSide.type = Material.CHEST
+                leftSide.type = Material.CHEST
+                rightSide.blockData = Material.CHEST.createBlockData("[facing=north,type=right]")
+                leftSide.blockData = Material.CHEST.createBlockData("[facing=north,type=left]")
+                createChest(p)
+                e.drops.clear()
+            } else
             {
-                new Prefix(p, ChatColor.RED + "周りにブロックが設置されていたためアイテムをBox内に入れる事ができませんでした。");
-                return;
+                Prefix(p, ChatColor.RED.toString() + "周りにブロックが設置されていたためアイテムをBox内に入れる事ができませんでした。")
+                return
             }
-            new Prefix(p, ChatColor.AQUA + "Boxは正常に作成されました。");
+            Prefix(p, ChatColor.AQUA.toString() + "Boxは正常に作成されました。")
         }
     }
 
-    private void createChest(Player p)
+    private fun createChest(p : Player)
     {
-        Chest chest = (Chest) p.getLocation().getBlock().getState();
-
-        for (ItemStack item : p.getInventory())
+        val chest = p.location.block.state as Chest
+        for (item in p.inventory)
         {
             if (item != null)
             {
-                chest.getInventory().addItem(item);
+                chest.inventory.addItem(item)
             }
         }
     }
 
-    private void setBox(Player p) //ボックス設定
+    private fun setBox(p : Player) //ボックス設定
     {
-        boxes.set("Boxes." + p.getUniqueId() + ".Name", p.getName()); //プレイヤーの名前
-        boxes.set("Boxes." + p.getUniqueId() + ".Location", p.getLocation()); //プレイヤーの死んだロケーション
-
-        new SaveFile(); //ファイルを保存
+        boxes!!["Boxes." + p.uniqueId + ".Name"] = p.name //プレイヤーの名前
+        boxes["Boxes." + p.uniqueId + ".Location"] = p.location //プレイヤーの死んだロケーション
+        SaveFile() //ファイルを保存
     }
 }

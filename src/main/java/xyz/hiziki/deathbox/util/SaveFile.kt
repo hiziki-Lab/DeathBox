@@ -1,25 +1,22 @@
-package xyz.hiziki.deathbox.util;
+package xyz.hiziki.deathbox.util
 
-import org.bukkit.configuration.file.YamlConfiguration;
-import xyz.hiziki.deathbox.Main;
+import org.bukkit.configuration.file.YamlConfiguration
+import xyz.hiziki.deathbox.Main
+import java.io.File
+import java.io.IOException
 
-import java.io.File;
-import java.io.IOException;
-
-public class SaveFile
+class SaveFile
 {
-    public SaveFile()
+    init
     {
-        File boxFile = Main.getBoxFile();
-        YamlConfiguration boxes = Main.getBoxes();
-
+        val boxFile : File = Main.Companion.getBoxFile()
+        val boxes : YamlConfiguration = Main.Companion.getBoxes()
         try
         {
-            boxes.save(boxFile);
-        }
-        catch (IOException e)
+            boxes.save(boxFile)
+        } catch (e : IOException)
         {
-            e.printStackTrace();
+            e.printStackTrace()
         }
     }
 }
