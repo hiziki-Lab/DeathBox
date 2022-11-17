@@ -14,12 +14,15 @@ import xyz.hiziki.deathbox.util.SaveFile
 
 class PlayerDeath : Listener
 {
-    private val boxes : YamlConfiguration? = Main.Companion.getBoxes()
+    private val boxes : YamlConfiguration = Main.boxes!!
+
     @EventHandler
     fun onPlayerDeath(e : PlayerDeathEvent)
     {
         val p = e.entity
+
         setBox(p)
+
         if (p.location.clone().add(0.0, 0.0, 0.0).block.type == Material.AIR) //死んだときのy座標にブロックがなかったら
         {
             if (p.location.clone().add(0.0, 0.0, 1.0).block.type == Material.AIR)
@@ -33,7 +36,8 @@ class PlayerDeath : Listener
                 leftSide.blockData = Material.CHEST.createBlockData("[facing=west,type=left]")
                 createChest(p)
                 e.drops.clear()
-            } else if (p.location.clone().add(0.0, 0.0, -1.0).block.type == Material.AIR)
+            }
+            else if (p.location.clone().add(0.0, 0.0, -1.0).block.type == Material.AIR)
             {
                 //死亡位置からz+1が空気だった場合
                 val rightSide = p.location.block
@@ -44,7 +48,8 @@ class PlayerDeath : Listener
                 leftSide.blockData = Material.CHEST.createBlockData("[facing=east,type=left]")
                 createChest(p)
                 e.drops.clear()
-            } else if (p.location.clone().add(1.0, 0.0, 0.0).block.type == Material.AIR)
+            }
+            else if (p.location.clone().add(1.0, 0.0, 0.0).block.type == Material.AIR)
             {
                 //死亡位置からx+1が空気だった場合
                 val rightSide = p.location.block
@@ -55,7 +60,8 @@ class PlayerDeath : Listener
                 leftSide.blockData = Material.CHEST.createBlockData("[facing=north,type=right]")
                 createChest(p)
                 e.drops.clear()
-            } else if (p.location.clone().add(-1.0, 0.0, 0.0).block.type == Material.AIR)
+            }
+            else if (p.location.clone().add(-1.0, 0.0, 0.0).block.type == Material.AIR)
             {
                 //死亡位置からx-1が空気だった場合
                 val rightSide = p.location.block
@@ -67,7 +73,8 @@ class PlayerDeath : Listener
                 createChest(p)
                 e.drops.clear()
             }
-        } else if (p.location.clone().add(0.0, 1.0, 0.0).block.type == Material.AIR) //死んだときのy座標の一つ上にブロックがなかったら
+        }
+        else if (p.location.clone().add(0.0, 1.0, 0.0).block.type == Material.AIR) //死んだときのy座標の一つ上にブロックがなかったら
         {
             if (p.location.clone().add(0.0, 1.0, 1.0).block.type == Material.AIR)
             {
@@ -80,7 +87,8 @@ class PlayerDeath : Listener
                 leftSide.blockData = Material.CHEST.createBlockData("[facing=west,type=left]")
                 createChest(p)
                 e.drops.clear()
-            } else if (p.location.clone().add(0.0, 1.0, -1.0).block.type == Material.AIR)
+            }
+            else if (p.location.clone().add(0.0, 1.0, -1.0).block.type == Material.AIR)
             {
                 //死亡位置からz+1が空気だった場合
                 val rightSide = p.location.clone().add(0.0, 1.0, 0.0).block
@@ -91,7 +99,8 @@ class PlayerDeath : Listener
                 leftSide.blockData = Material.CHEST.createBlockData("[facing=east,type=left]")
                 createChest(p)
                 e.drops.clear()
-            } else if (p.location.clone().add(1.0, 0.0, 0.0).block.type == Material.AIR)
+            }
+            else if (p.location.clone().add(1.0, 0.0, 0.0).block.type == Material.AIR)
             {
                 //死亡位置からx+1が空気だった場合
                 val rightSide = p.location.clone().add(0.0, 1.0, 0.0).block
@@ -102,7 +111,8 @@ class PlayerDeath : Listener
                 leftSide.blockData = Material.CHEST.createBlockData("[facing=north,type=right]")
                 createChest(p)
                 e.drops.clear()
-            } else if (p.location.clone().add(-1.0, 0.0, 0.0).block.type == Material.AIR)
+            }
+            else if (p.location.clone().add(-1.0, 0.0, 0.0).block.type == Material.AIR)
             {
                 //死亡位置からx-1が空気だった場合
                 val rightSide = p.location.clone().add(0.0, 1.0, 0.0).block
@@ -113,7 +123,8 @@ class PlayerDeath : Listener
                 leftSide.blockData = Material.CHEST.createBlockData("[facing=north,type=left]")
                 createChest(p)
                 e.drops.clear()
-            } else
+            }
+            else
             {
                 Prefix(p, ChatColor.RED.toString() + "周りにブロックが設置されていたためアイテムをBox内に入れる事ができませんでした。")
                 return
@@ -125,6 +136,7 @@ class PlayerDeath : Listener
     private fun createChest(p : Player)
     {
         val chest = p.location.block.state as Chest
+
         for (item in p.inventory)
         {
             if (item != null)
@@ -136,8 +148,9 @@ class PlayerDeath : Listener
 
     private fun setBox(p : Player) //ボックス設定
     {
-        boxes!!["Boxes." + p.uniqueId + ".Name"] = p.name //プレイヤーの名前
+        boxes["Boxes." + p.uniqueId + ".Name"] = p.name //プレイヤーの名前
         boxes["Boxes." + p.uniqueId + ".Location"] = p.location //プレイヤーの死んだロケーション
+
         SaveFile() //ファイルを保存
     }
 }
