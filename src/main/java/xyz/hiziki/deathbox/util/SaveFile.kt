@@ -9,12 +9,14 @@ class SaveFile
 {
     init
     {
-        val boxFile : File = Main.Companion.getBoxFile()
-        val boxes : YamlConfiguration = Main.Companion.getBoxes()
+        val boxFile : File = Main.boxFile!!
+        val boxes : YamlConfiguration = Main.boxes!!
+
         try
         {
             boxes.save(boxFile)
-        } catch (e : IOException)
+        }
+        catch (e : IOException)
         {
             e.printStackTrace()
         }
