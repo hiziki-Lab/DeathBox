@@ -1,6 +1,7 @@
 package xyz.hiziki.deathbox.event
 
 import org.bukkit.ChatColor
+import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Chest
 import org.bukkit.configuration.file.YamlConfiguration
@@ -12,145 +13,62 @@ import xyz.hiziki.deathbox.Main
 import xyz.hiziki.deathbox.util.Prefix
 import xyz.hiziki.deathbox.util.SaveFile
 
-class PlayerDeath : Listener
-{
-    private val boxes : YamlConfiguration = Main.boxes!!
+class PlayerDeath : Listener {
+    private val boxes: YamlConfiguration = Main.boxes ?: error("Boxデータが読み込まれていません")
 
     @EventHandler
-    fun onPlayerDeath(e : PlayerDeathEvent)
-    {
-        val p = e.entity
+    fun onPlayerDeath(e: PlayerDeathEvent) {
+        val player = e.entity
+        val location = setBox(player)
 
-        setBox(p)
-
-        if (p.location.clone().add(0.0, 0.0, 0.0).block.type == Material.AIR) //死んだときのy座標にブロックがなかったら
-        {
-            if (p.location.clone().add(0.0, 0.0, 1.0).block.type == Material.AIR)
-            {
-                //死亡位置からz-1が空気だった場合
-                val rightSide = p.location.block
-                val leftSide = p.location.clone().add(0.0, 0.0, 1.0).block //南に向かってチェストを設置
-                rightSide.type = Material.CHEST
-                leftSide.type = Material.CHEST
-                rightSide.blockData = Material.CHEST.createBlockData("[facing=west,type=right]")
-                leftSide.blockData = Material.CHEST.createBlockData("[facing=west,type=left]")
-                createChest(p)
-                e.drops.clear()
-            }
-            else if (p.location.clone().add(0.0, 0.0, -1.0).block.type == Material.AIR)
-            {
-                //死亡位置からz+1が空気だった場合
-                val rightSide = p.location.block
-                val leftSide = p.location.clone().add(0.0, 0.0, -1.0).block //北に向かってチェストを設置
-                rightSide.type = Material.CHEST
-                leftSide.type = Material.CHEST
-                rightSide.blockData = Material.CHEST.createBlockData("[facing=east,type=right]")
-                leftSide.blockData = Material.CHEST.createBlockData("[facing=east,type=left]")
-                createChest(p)
-                e.drops.clear()
-            }
-            else if (p.location.clone().add(1.0, 0.0, 0.0).block.type == Material.AIR)
-            {
-                //死亡位置からx+1が空気だった場合
-                val rightSide = p.location.block
-                val leftSide = p.location.clone().add(1.0, 0.0, 0.0).block //西に向かってチェストを設置
-                rightSide.type = Material.CHEST
-                leftSide.type = Material.CHEST
-                rightSide.blockData = Material.CHEST.createBlockData("[facing=north,type=left]")
-                leftSide.blockData = Material.CHEST.createBlockData("[facing=north,type=right]")
-                createChest(p)
-                e.drops.clear()
-            }
-            else if (p.location.clone().add(-1.0, 0.0, 0.0).block.type == Material.AIR)
-            {
-                //死亡位置からx-1が空気だった場合
-                val rightSide = p.location.block
-                val leftSide = p.location.clone().add(-1.0, 0.0, 0.0).block //東に向かってチェストを設置
-                rightSide.type = Material.CHEST
-                leftSide.type = Material.CHEST
-                rightSide.blockData = Material.CHEST.createBlockData("[facing=north,type=right]")
-                leftSide.blockData = Material.CHEST.createBlockData("[facing=north,type=left]")
-                createChest(p)
-                e.drops.clear()
-            }
-        }
-        else if (p.location.clone().add(0.0, 1.0, 0.0).block.type == Material.AIR) //死んだときのy座標の一つ上にブロックがなかったら
-        {
-            if (p.location.clone().add(0.0, 1.0, 1.0).block.type == Material.AIR)
-            {
-                //死亡位置からz-1が空気だった場合
-                val rightSide = p.location.clone().add(0.0, 1.0, 0.0).block
-                val leftSide = p.location.clone().add(0.0, 1.0, 1.0).block //南に向かってチェストを設置
-                rightSide.type = Material.CHEST
-                leftSide.type = Material.CHEST
-                rightSide.blockData = Material.CHEST.createBlockData("[facing=west,type=right]")
-                leftSide.blockData = Material.CHEST.createBlockData("[facing=west,type=left]")
-                createChest(p)
-                e.drops.clear()
-            }
-            else if (p.location.clone().add(0.0, 1.0, -1.0).block.type == Material.AIR)
-            {
-                //死亡位置からz+1が空気だった場合
-                val rightSide = p.location.clone().add(0.0, 1.0, 0.0).block
-                val leftSide = p.location.clone().add(0.0, 1.0, -1.0).block //北に向かってチェストを設置
-                rightSide.type = Material.CHEST
-                leftSide.type = Material.CHEST
-                rightSide.blockData = Material.CHEST.createBlockData("[facing=east,type=right]")
-                leftSide.blockData = Material.CHEST.createBlockData("[facing=east,type=left]")
-                createChest(p)
-                e.drops.clear()
-            }
-            else if (p.location.clone().add(1.0, 0.0, 0.0).block.type == Material.AIR)
-            {
-                //死亡位置からx+1が空気だった場合
-                val rightSide = p.location.clone().add(0.0, 1.0, 0.0).block
-                val leftSide = p.location.clone().add(1.0, 1.0, 0.0).block //西に向かってチェストを設置
-                rightSide.type = Material.CHEST
-                leftSide.type = Material.CHEST
-                rightSide.blockData = Material.CHEST.createBlockData("[facing=north,type=left]")
-                leftSide.blockData = Material.CHEST.createBlockData("[facing=north,type=right]")
-                createChest(p)
-                e.drops.clear()
-            }
-            else if (p.location.clone().add(-1.0, 0.0, 0.0).block.type == Material.AIR)
-            {
-                //死亡位置からx-1が空気だった場合
-                val rightSide = p.location.clone().add(0.0, 1.0, 0.0).block
-                val leftSide = p.location.clone().add(-1.0, 1.0, 0.0).block //東に向かってチェストを設置
-                rightSide.type = Material.CHEST
-                leftSide.type = Material.CHEST
-                rightSide.blockData = Material.CHEST.createBlockData("[facing=north,type=right]")
-                leftSide.blockData = Material.CHEST.createBlockData("[facing=north,type=left]")
-                createChest(p)
-                e.drops.clear()
-            }
-            else
-            {
-                Prefix(p, ChatColor.RED.toString() + "周りにブロックが設置されていたためアイテムをBox内に入れる事ができませんでした。")
-                return
-            }
-            Prefix(p, ChatColor.AQUA.toString() + "Boxは正常に作成されました。")
+        if (isAirBlock(location)) {
+            createChest(player, location)
+            e.drops.clear()
+            Prefix(player, "${ChatColor.AQUA}Boxは正常に作成されました。")
+        } else {
+            Prefix(
+                    player,
+                    "${ChatColor.RED}周りにブロックが設置されていたためアイテムをBox内に入れる事ができませんでした。"
+            )
         }
     }
 
-    private fun createChest(p : Player)
-    {
-        val chest = p.location.block.state as Chest
+    private fun setBox(player: Player): Location {
+        val uniqueId = player.uniqueId.toString()
+        val location = player.location
 
-        for (item in p.inventory)
-        {
-            if (item != null)
-            {
-                chest.inventory.addItem(item)
-            }
+        boxes["Boxes.$uniqueId.Name"] = player.name
+        boxes["Boxes.$uniqueId.Location"] = location
+
+        SaveFile()
+
+        return location
+    }
+
+    private fun isAirBlock(location: Location): Boolean {
+        return location.clone().add(0.0, 0.0, 0.0).block.type == Material.AIR
+    }
+
+    private fun createChest(player: Player, location: Location) {
+        val chest = getChest(location)
+
+        player.inventory.contents.filterNotNull().forEach { item ->
+            chest.inventory.addItem(item)
         }
     }
 
-    private fun setBox(p : Player) //ボックス設定
-    {
-        boxes["Boxes." + p.uniqueId + ".Name"] = p.name //プレイヤーの名前
-        boxes["Boxes." + p.uniqueId + ".Location"] = p.location //プレイヤーの死んだロケーション
-
-        SaveFile() //ファイルを保存
+    private fun getChest(location: Location): Chest {
+        val block = location.block
+        val facing = when {
+            location.x < 0 -> "east"
+            location.x > 0 -> "west"
+            location.z < 0 -> "south"
+            else -> "north"
+        }
+        val chest = block.state as Chest
+        val chestData =
+                "[facing=$facing,type=${if (facing == "north" || facing == "south") "left" else "right"}]"
+        chest.blockData = Material.CHEST.createBlockData(chestData)
+        return chest
     }
 }
