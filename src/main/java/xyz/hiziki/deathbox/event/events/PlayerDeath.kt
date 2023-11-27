@@ -57,8 +57,7 @@ class PlayerDeath (e: PlayerDeathEvent) {
             else -> "north"
         }
         val chest = block.state as Chest
-        val chestData =
-                "[facing=$facing,type=${if (facing == "north" || facing == "south") "left" else "right"}]"
+        val chestData = "[facing=$facing,type=${if (facing == "north" || facing == "south") "left" else "right"}]"
         chest.blockData = Material.CHEST.createBlockData(chestData)
         return chest
     }
