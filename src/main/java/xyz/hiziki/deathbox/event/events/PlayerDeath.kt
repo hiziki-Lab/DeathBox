@@ -9,7 +9,6 @@ import org.bukkit.entity.Player
 import org.bukkit.event.entity.PlayerDeathEvent
 import xyz.hiziki.deathbox.Main
 import xyz.hiziki.deathbox.Util
-import xyz.hiziki.deathbox.util.Prefix
 
 class PlayerDeath (e: PlayerDeathEvent) {
     private val boxes: YamlConfiguration = Main.boxes ?: error("Boxデータが読み込まれていません")
@@ -21,12 +20,9 @@ class PlayerDeath (e: PlayerDeathEvent) {
         if (isAirBlock(location)) {
             createChest(player, location)
             e.drops.clear()
-            Prefix(player, "${ChatColor.AQUA}Boxは正常に作成されました。")
+            player.sendMessage(Util().prefix() + "${ChatColor.AQUA}Boxは正常に作成されました。")
         } else {
-            Prefix(
-                    player,
-                    "${ChatColor.RED}周りにブロックが設置されていたためアイテムをBox内に入れる事ができませんでした。"
-            )
+            player.sendMessage(Util().prefix() + "${ChatColor.RED}周りにブロックが設置されていたためアイテムをBox内に入れる事ができませんでした。")
         }
     }
 

@@ -9,7 +9,6 @@ import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import xyz.hiziki.deathbox.Main
 import xyz.hiziki.deathbox.Util
-import xyz.hiziki.deathbox.util.Prefix
 
 class BoxCommandExecutor : CommandExecutor {
     private val boxes : YamlConfiguration = Main.boxes ?: error("Boxデータが読み込まれていません")
@@ -27,10 +26,10 @@ class BoxCommandExecutor : CommandExecutor {
                 val block = location.block
 
                 if (block.type == Material.CHEST) {
-                    Prefix(sender, "${ChatColor.AQUA}あなたのBoxは${location.world?.name}の" +
+                    sender.sendMessage(Util().prefix() + "${ChatColor.AQUA}あなたのBoxは${location.world?.name}の" +
                             "X:${block.x}, Y:${block.y}, Z:${block.z}にあります。")
                 } else {
-                    Prefix(sender, "${ChatColor.RED}あなたのBoxは何者かによって破壊されています。")
+                    sender.sendMessage(Util().prefix() + "${ChatColor.RED}あなたのBoxは何者かによって破壊されています。")
                 }
             }
         }
