@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import xyz.hiziki.deathbox.Main
+import xyz.hiziki.deathbox.Util
 import xyz.hiziki.deathbox.util.Prefix
 
 class BoxCommandExecutor : CommandExecutor {
@@ -21,7 +22,7 @@ class BoxCommandExecutor : CommandExecutor {
             val location = boxes.getLocation("Boxes.$uniqueId.Location")
 
             if (location == null) {
-                Prefix(sender, "${ChatColor.RED}Boxデータが見つかりません")
+                sender.sendMessage(Util().prefix() + "${ChatColor.RED}Boxデータが見つかりません")
             } else {
                 val block = location.block
 

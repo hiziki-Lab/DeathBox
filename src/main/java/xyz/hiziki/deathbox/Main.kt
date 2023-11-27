@@ -1,16 +1,14 @@
 package xyz.hiziki.deathbox
 
-import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import xyz.hiziki.deathbox.command.BoxCommandExecutor
-import xyz.hiziki.deathbox.event.PlayerDeath
+import xyz.hiziki.deathbox.event.EventManager
 import java.io.File
 
 class Main : JavaPlugin() {
     companion object {
         var boxFile : File? = null
-
         var boxes : YamlConfiguration? = null
     }
 
@@ -22,7 +20,7 @@ class Main : JavaPlugin() {
         boxes = YamlConfiguration.loadConfiguration(boxFile!!)
 
         getCommand("box")!!.setExecutor(BoxCommandExecutor())
-        Bukkit.getPluginManager().registerEvents(PlayerDeath(), this)
+        EventManager(this)
 
         logger.info("プラグインは正常に起動しました。")
     }
