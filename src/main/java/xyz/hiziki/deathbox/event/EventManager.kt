@@ -1,8 +1,8 @@
-package xyz.hiziki.deathbox.event;
+package xyz.hiziki.deathbox.event
 
 import org.bukkit.Bukkit
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.world.WorldSaveEvent
 import org.bukkit.plugin.java.JavaPlugin
