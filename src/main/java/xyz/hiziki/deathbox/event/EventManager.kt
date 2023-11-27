@@ -21,6 +21,6 @@ class EventManager(plugin: JavaPlugin) : Listener {
 
     @EventHandler
     fun onWorldSave(e: WorldSaveEvent) {
-        WorldSave(e)
+        WorldSave()
     }
 }
